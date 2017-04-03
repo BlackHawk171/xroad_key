@@ -109,24 +109,43 @@ echo "Kui PINGIMINE failis siis tuleks vaadata üle konf failid"
 sleep 5
 #Puhastan ekraani
 clear
+
+#################named.conf.local tegemine################
+sleep 5
+echo "alustan named.conf.local faili loomist"
+sleep 5
+
+echo 'zone "'$domNimi'"{' >> named.conf.local
+echo '			type master;' >> named.conf.local
+echo '			file /etc/bind/db.'$domNimi';' >> named.conf.local
+echo '};' >> named.conf.local
+
+echo 'zone "'$TIP'"{' >> named.conf.local
+echo '			type master;' >> named.conf.local
+echo '			file /etc/bind/rev.'$TIP'.in-addr.arpa;' >> named.conf.local
+echo '};' >> named.conf.local
+
+
+
 #### kontrollin kas skript ikka on samas kausta või ei ole
 cd /etc/bind || exit
 ################# nimeteisenduse loomine #########################################
-sed -i '9s/.*/zone " '"$domNimi"' "{ /' named.conf.local
-sed -i '10s/.*/			type master;/' named.conf.local
-sed -i '11s/.*/			file "/etc/bind/db.'"$domNimi"'";/' named.conf.local
-sed -i '12s/.*/};/' named.conf.local
+#sed -i '9s/.*/zone " '"$domNimi"' "{ /' named.conf.local
+#sed -i '10s/.*/			type master;/' named.conf.local
+#sed -i '11s/.*/			file "/etc/bind/db.'"$domNimi"'";/' named.conf.local
+#sed -i '12s/.*/};/' named.conf.local
 ####Tagurpidi IP Kirjed
-sed -i '14s/.*/zone '"$TIP"'.in-addr.arpa"{/' named.conf.local
-sed -i '15s/.*/			type master;/' named.conf.local
-sed -i '16s/.*/			file "/etc/bind/db.'"$TIP".in-addr.arpa'";/' named.conf.local
-sed -i '17s/.*/};/' named.conf.local
+#sed -i '14s/.*/zone '"$TIP"'.in-addr.arpa"{/' named.conf.local
+#sed -i '15s/.*/			type master;/' named.conf.local
+#sed -i '16s/.*/			file "/etc/bind/db.'"$TIP".in-addr.arpa'";/' named.conf.local
+#sed -i '17s/.*/};/' named.conf.local
 #Loon Tagurpidi IP kirjed
 cp db."$domNimi" rev."$TIP".in-addr.arpa
 ################# in-addr.arpa kirje muutmine #####################################
-sed -i '12s/.*/@		IN		NS		ns./' rev."$TIP".in-addr.arpa
-sed -i '13s/.*/'"$Viimane"'		IN		PTR		ns.'"$domNimi"'/' rev."$TIP".in-addr.arpa
-sed -i '13s/.*/'"$Viimane"'		IN		PTR		'"$domNimi"'/' rev."$TIP".in-addr.arpa
+#sed -i '12s/.*/@		IN		NS		ns./' rev."$TIP".in-addr.arpa
+#sed -i '13s/.*/'"$Viimane"'		IN		PTR		ns.'"$domNimi"'/' rev."$TIP".in-addr.arpa
+#sed -i '13s/.*/'"$Viimane"'		IN		PTR		'"$domNimi"'/' rev."$TIP".in-addr.arpa
+#sed -i '14s/.*//' rev."$TIP".in-addr.arpa
 #Puhastan ekraani
 clear
 #Annan kasutajale teada
@@ -140,4 +159,7 @@ sleep 5
 #Puhastan ekraani
 clear
 #Annan teada kasutajale
+
+service bind9 restart
+
 echo "Valmis"
