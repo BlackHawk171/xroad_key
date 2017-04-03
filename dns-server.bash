@@ -3,10 +3,6 @@
 ###### 
 #!/bin/bash
 #Kontrollin kas kasutaja on ikka root et ta saaks käivitada seda skripti
-if [ "$EUID" -ne 0 ]
-  then echo "Palun käivita see skript ROOT õigustega"
-  exit
-fi
 ###### Küsimused
 #Puhastan ekraani
 clear
