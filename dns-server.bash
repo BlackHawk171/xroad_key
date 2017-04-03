@@ -4,6 +4,14 @@ if [ "$EUID" -ne 0 ]
   then echo "Palun käivita see skript ROOT õigustega"
   exit
 fi
+
+###updates###
+
+apt-get update
+apt-get ugprade -y
+
+sed -i -e 's/\r$//' dns-server.bash
+
 ###### Küsimused
 #Puhastan ekraani
 clear
@@ -59,7 +67,7 @@ echo "Konfigureerimine alustab"
 cd /etc/bind || exit
 #Lisan forwarderid, kui siin midagi valesti läheb siis peab hakkama otsast peale
 sed -i '13s/.*/		forwarders {/' named.conf.options
-sed -i '14s/.*/		'"$gwAadress"';/' named.conf.options
+sed -i '14s/.*/		'"$IP"';/' named.conf.options
 sed -i '15s/.*/		};/' named.conf.options
 #Peatan skripti 5 sekundiks
 sleep 5
@@ -74,11 +82,15 @@ echo "Alustan tsooni loomist"
 #Kopeerin db.local faili enda domeeni tsooni jaoks
 cp db.local db."$domNimi"
 sed -i '5s/.*/@		IN		SOA		ns.'"$domNimi"'. admin.'"$domNimi"'. (/' db."$domNimi"
-sed -i '6s/.*/						'$r'		; Serial /' db."$domNimi"
+sed -i '6s/.*/						"'$r'"		; Serial /' db."$domNimi"
 sed -i '12s/.*/@			IN		NS		ns.'"$domNimi"'. /' db."$domNimi"
 sed -i '13s/.*/@			IN		A		'"$IP"' /' db."$domNimi"
 sed -i '14s/.*/ns			IN		A		'"$IP"' /' db."$domNimi"
 sed -i '15s/.*/www			IN		A		'"$IP"' /' db."$domNimi"
+
+echo 'www		IN		A 		'"$IP"'' >> named.conf.local
+
+
 ################# Teenuse taaskäivitamine ja kontroll ###########################
 #Annan Kasutajale teada
 echo "Tsoon on valmis"
@@ -116,13 +128,13 @@ echo "alustan named.conf.local faili loomist"
 sleep 5
 
 echo 'zone "'$domNimi'"{' >> named.conf.local
-echo '			type master;' >> named.conf.local
-echo '			file /etc/bind/db.'$domNimi';' >> named.conf.local
+echo '		type master;' >> named.conf.local
+echo '		file "/etc/bind/db.'$domNimi'";' >> named.conf.local
 echo '};' >> named.conf.local
 
 echo 'zone "'$TIP'.in-addr.arpa"{' >> named.conf.local
-echo '			type master;' >> named.conf.local
-echo '			file /etc/bind/rev.'$TIP'.in-addr.arpa;' >> named.conf.local
+echo '		type master;' >> named.conf.local
+echo '		file "/etc/bind/rev.'$TIP'.in-addr.arpa";' >> named.conf.local
 echo '};' >> named.conf.local
 
 
