@@ -5,34 +5,34 @@
 #Kontrollin kas kasutaja on ikka root et ta saaks käivitada seda skripti
 ###### Küsimused
 #Puhastan ekraani
-clear
+#clear
 #Küsin kasutajalt küsimuse
 echo "Palun sisesta ruuteri IP aadress"
 read gwAadress
 #Puhastan ekraani
-clear
+#clear
 #Küsin kasutajalt küsimuse
 echo "Palun sisesta täis pikk nimi enda domeenist (Näiteks: eestiasi.ee)"
 read domNimi
 #Puhastan ekraani
-clear
+#clear
 #Küsin kasutajalt küsimuse
 echo "Palun sisesta selle masina IPv4 aadress"
 read IP
 #Puhastan ekraani
-clear
+#clear
 #Küsin kasutajalt küsimuse
 echo "Palun sisesta selle masina IPv4 aadress TAGURPIDI (näiteks: 1.168.192)"
 read TIP
 #Peatan skripti 5 sekundiks
 sleep 5
 #Puhastan ekraani
-clear
+#clear
 #Küsin kasutajalt küsimuse
 echo "Palun sisesta enda masian IPv4 aadressi viimased numbrid"
 read Viimane
 #Puhastan ekraani
-clear
+#clear
 #Annan kasutajale teada
 echo "Antud muutujaid ei saa tagasi võtta"
 ####### Muutujad #######
@@ -43,14 +43,14 @@ r=$(( $RANDOM % 10 + 500000 )); echo $r
 #Paigaldan bind9 paketid
 apt-get install -y bind9
 #Puhastan ekraani
-clear
+#clear
 #Peatan skripti 5 sekundiks
-sleep 5
+#sleep 5
 echo "Paketid on paigaldatud"
 #Peatan skripti 5 sekundiks
-sleep 5
+#sleep 5
 #Puhastan ekraani
-clear
+#clear
 #Annan kasutajale teada
 echo "Konfigureerimine alustab"
 ####### Konfiguratsiooni muutmine
@@ -61,12 +61,12 @@ sed -i '13s/.*/		forwarders {/' named.conf.options
 sed -i '14s/.*/		'$gwAadress';/' named.conf.options
 sed -i '15s/.*/		};/' named.conf.options
 #Peatan skripti 5 sekundiks
-sleep 5
+#sleep 5
 echo "named.conf.options on valmis"
 #Peatan skripti 5 sekundiks
-sleep 5
+#sleep 5
 #Puhastan ekraani
-clear
+#clear
 #Annan kasutajale teada
 echo "Alustan tsooni loomist"
 #################|db.DOMEEN.LAB tsooni tegemine|################## 
@@ -82,18 +82,18 @@ sed -i '15s/.*/www			IN		A		'$IP' /' db.$domNimi
 #Annan Kasutajale teada
 echo "Tsoon on valmis"
 #Peatan skripti 5 sekundiks
-sleep 5
+#sleep 5
 #Puhastan ekraani
-clear
+#clear
 echo "Alustan dnsi serveri kontrolli ......"
 #Peatan skripti 5 sekundiks
-sleep 5
+#sleep 5
 #Teen teenusele taaskäivituse
 service bind9 restart
 #Puhastan ekraani
-clear
+#clear
 #Peatan skripti 5 sekundiks
-sleep 5
+#sleep 5
 #vaatan kas antud server on ikka DNS
 cat /etc/resolv.conf
 #kontrollin domeeni nime kirjeid
@@ -101,13 +101,13 @@ dig $domNimi
 #Pingin domeeni nime
 ping $domNimi
 #Peatan skripti 5 sekundiks
-sleep 5
+#sleep 5
 #Teavitan kasutajat
 echo "Kui PINGIMINE failis siis tuleks vaadata üle konf failid"
 #Peatan skripti 5 sekundiks
-sleep 5
+#sleep 5
 #Puhastan ekraani
-clear
+#clear
 #### kontrollin kas skript ikka on samas kausta või ei ole
 cd /etc/bind
 ################# nimeteisenduse loomine #########################################
@@ -127,16 +127,16 @@ sed -i '12s/.*/@		IN		NS		ns./' rev.$TIP.in-addr.arpa
 sed -i '13s/.*/'$Viimane'		IN		PTR		ns.'$domNimi'/' rev.$TIP.in-addr.arpa
 sed -i '13s/.*/'$Viimane'		IN		PTR		'$domNimi'/' rev.$TIP.in-addr.arpa
 #Puhastan ekraani
-clear
+#clear
 #Annan kasutajale teada
 echo "PTR kirjed on lisatud"
 #Peatan skripti 5 sekundiks
-sleep 5
+#sleep 5
 #### Lõpp kontroll ####
 host $IP
 ##### Annan teada et lõpp on käes ######
-sleep 5
+#sleep 5
 #Puhastan ekraani
-clear
+#clear
 #Annan teada kasutajale
 echo "Valmis"
