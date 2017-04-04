@@ -50,7 +50,7 @@ echo "Antud muutujaid ei saa tagasi võtta"
 r=$(( RANDOM % 10 + 500000 )); echo $r
 ####### Paketide paigaldus ########
 #Paigaldan bind9 paketid
-apt-get install -y bind9
+apt-get install -y bind9 bind9utils bind9-doc
 #Puhastan ekraani
 clear
 #Peatan skripti 5 sekundiks
@@ -161,10 +161,6 @@ sed -i '14s/.*/'"$Viimane"'		IN		PTR		'"$domNimi"'/' rev."$TIP".in-addr.arpa
 
 #echo '			'"$Viimane"'		IN		PTR		ns.'"$domNimi"'' >> rev."$TIP".in-addr.arpa
 #echo '			'"$Viimane"'		IN		PTR		'"$domNimi"'' >> rev."$TIP".in-addr.arpa
-
-
-
-
 
 #Puhastan ekraani
 clear
